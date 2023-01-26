@@ -1,0 +1,27 @@
+
+import socket
+
+def t_celsius(fah):
+        cel = (fah-32)*(5/9)
+        return cel
+
+def main():
+
+        ssock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        ssock.bind(("192.168.195.136", 8000))
+        ssock.listen(3)
+
+        while True:
+
+                csock, addr = ssock.accept()
+                print("Connection from %s" % str(addr))
+
+                far = csock.recv(1024).decode()
+                cel = t_celsius(float(far))
+                cel = round(cel,2)
+                cel = str(cel)
+                csock.send(cel.encode())
+
+main()
+
+
